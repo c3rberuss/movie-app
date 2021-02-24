@@ -30,17 +30,10 @@ class WatchlistController extends GetxController {
     result = await _getWatchlist();
 
     if (result != null && result is Success<List<MoviePoster>>) {
-      if (refresh) {
-        data.clear();
-        data.addAll(result.data);
-        _status = Success();
-        update(['builder']);
-      } else {
-        data.clear();
-        data.addAll(result.data);
-        _status = Success();
-        update(['builder']);
-      }
+      data.clear();
+      data.addAll(result.data);
+      _status = Success();
+      update(['builder']);
     } else if (result != null && result is Failure) {
       _status = Failure();
       update(['builder']);

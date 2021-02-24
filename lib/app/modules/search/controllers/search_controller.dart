@@ -59,23 +59,16 @@ class SearchController extends GetxController {
         _isLoading.value = true;
       }
 
-      _updateFilterType(filterType);
+      filterType = _updateFilterType(filterType);
 
       result = await _searchMovieInteractor(query, 1, refresh, filterType);
     }
 
     if (result != null && result is Success<MoviePosterResponse>) {
-      if (refresh) {
-        data.clear();
-        data.addAll(result.data.search);
-        _status = Success();
-        update(['data', 'loader']);
-      } else {
-        data.clear();
-        data.addAll(result.data.search);
-        _status = Success();
-        update(['data', 'loader']);
-      }
+      data.clear();
+      data.addAll(result.data.search);
+      _status = Success();
+      update(['data', 'loader']);
     } else if (result != null && result is Failure<MoviePosterResponse>) {
       _status = Failure();
       update(['data', "loader"]);
@@ -92,14 +85,14 @@ class SearchController extends GetxController {
     final query = textEditingController.text.toLowerCase();
 
     if ((query.isEmpty || query.length < 3) && (_prevQuery.isEmpty || _prevQuery.length < 3)) {
-      _updateFilterType(filterType);
+      filterType = _updateFilterType(filterType);
     } else {
       await refreshData(filterType: filterType);
     }
   }
 
   Future<void> searchMovie({bool refresh = false, FilterType filterType}) async {
-    _updateFilterType(filterType);
+    filterType = _updateFilterType(filterType);
 
     final query = textEditingController.text.toLowerCase();
 
@@ -150,11 +143,11 @@ class SearchController extends GetxController {
     _height.value = 80;
   }
 
-  void _updateFilterType(FilterType filterType) {
+  FilterType _updateFilterType(FilterType filterType) {
     if (filterType != null) {
       _filterType = filterType;
-    } else {
-      filterType = _filterType;
     }
+
+    return _filterType;
   }
 }
